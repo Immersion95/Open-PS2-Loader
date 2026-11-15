@@ -262,7 +262,8 @@ static void apply_capcom_protection_patch(void *modpack_addr, int mod_index, int
 {
     u32 iop_addr = _lw((u32)modpack_addr + (mod_index << 3) + 8);
     u32 opcode = 0x10000025;
-    SyncDCache((void *)opcode, (void *)((unsigned int)&opcode + sizeof(opcode)));
+    SyncDCache((void *)&opcode,
+           (void *)((unsigned char *)&opcode + sizeof(opcode)));
     smem_write((void *)(iop_addr + 0x270), (void *)&opcode, sizeof(opcode));
 
     capcom_lmb(modpack_addr, mod_index, mod_argc, mod_argv);
